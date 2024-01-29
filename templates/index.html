@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Abdelrhman's Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            color: #333;
+        }
+        .calculator {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            background-color: white;
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        .calculator:hover {
+            transform: scale(1.05);
+        }
+        .display {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 40px;
+            background-color: #e9e9e9;
+            text-align: right;
+            border: none;
+            border-radius: 10px;
+            font-size: 2.5em;
+            box-shadow: inset 0 4px 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .button {
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f7f7f7;
+            cursor: pointer;
+            font-size: 1.4em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .button:hover {
+            background-color: #e7e7e7;
+            box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+        }
+        .operation-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .operation-button:hover {
+            background-color: #45a049;
+        }
+        .equals-button {
+            background-color: #2196F3;
+            color: white;
+        }
+        .equals-button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('keydown', function(event) {
+                if (event.key >= 0 && event.key <= 9) {
+                    inputDigit(event.key);
+                }
+                if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+                    inputOperation(event.key);
+                }
+                if (event.key === 'Enter' || event.key === '=') {
+                    calculate();
+                }
+                if (event.key === 'Backspace') {
+                    clearLastEntry();
+                }
+                if (event.key === 'Escape') {
+                    clearDisplay();
+                }
+            });
+        });
+
+        function inputDigit(digit) {
+            document.getElementById('display').value += digit;
+        }
+
+        function inputOperation(operation) {
+            document.getElementById('display').value += ' ' + operation + ' ';
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function clearLastEntry() {
+            var display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            var display = document.getElementById('display').value.trim();
+            var parts = display.split(' ');
+
+            if (parts.length === 3) {
+                var num1 = parseFloat(parts[0]);
+                var num2 = parseFloat(parts[2]);
+                var operation = parts[1].trim();
+                var result = 0;
+
+                switch (operation) {
+                    case '+': result = num1 + num2; break;
+                    case '-': result = num1 - num2; break;
+                    case '*': result = num1 * num2; break;
+                    case '/': result = num1 / num2; break;
+                    default: alert('Invalid operation'); return;
+                }
+
+                document.getElementById('display').value = result;
+            } else {
+                alert('Please enter a valid expression (e.g., 5 + 3)');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" readonly>
+        <div class="buttons">
+            <button class="button" onclick="inputDigit(1)">1</button>
+            <button class="button" onclick="inputDigit(2)">2</button>
+            <button class="button" onclick="inputDigit(3)">3</button>
+            <button class="button operation-button" onclick="inputOperation('+')">+</button>
+            <button class="button" onclick="inputDigit(4)">4</button>
+            <button class="button" onclick="inputDigit(5)">5</button>
+            <button class="button" onclick="inputDigit(6)">6</button>
+            <button class="button operation-button" onclick="inputOperation('-')">-</button>
+            <button class="button" onclick="inputDigit(7)">7</button>
+            <button class="button" onclick="inputDigit(8)">8</button>
+            <button class="button" onclick="inputDigit(9)">9</button>
+            <button class="button operation-button" onclick="inputOperation('*')">*</button>
+            <button class="button" onclick="inputDigit(0)">0</button>
+            <button class="button" onclick="clearDisplay()">AC</button>
+            <button class="button operation-button" onclick="inputOperation('/')">/</button>
+            <button class="button equals-button" onclick="calculate()">=</button>
+
+
+        </div>
+    </div>
+</body>
+</html>
